@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>HBD love</title>
+
+<link rel="stylesheet" type="text/css" href="./file/default.css" />
+
+<script src="./file/jquery.min.js"></script>
+<script src="./file/jscex.min.js"></script>
+<script src="./file/jscex-parser.js"></script>
+<script src="./file/jscex-jit.js"></script>
+<script src="./file/jscex-builderbase.min.js"></script>
+<script src="./file/jscex-async.min.js"></script>
+<script src="./file/jscex-async-powerpack.min.js"></script>
+<script src="./file/functions.js" charset="utf-8"></script>
+<script src="./file/love.js" charset="utf-8"></script>
+
+<style>
+/* 🌸 TIMER */
+#clock-box {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    background: rgba(255, 235, 240, 0.9);
+    padding: 12px 26px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-family: "Segoe UI", cursive;
+    color: #c0392b;
+    box-shadow: 0 0 18px rgba(255, 80, 120, 0.6);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 2.5s ease;
+}
+
+#clock-box.show {
+    opacity: 1;
+}
+
+#clock {
+    white-space: nowrap;
+}
+
+/* 🖼️ BOTTOM LEFT IMAGE */
+#corner-image {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    z-index: 9999;
+    width: 120px;
+    height: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 2s ease, transform 2s ease;
+}
+
+#corner-image.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ✨ EXTRA POEM SECTIONS */
+.extra-section {
+    display: none;
+    font-family: "Segoe UI", cursive;
+    font-size: 16px;
+    color: #c0392b;
+    margin-top: 8px;
+    white-space: pre-wrap;
+}
+
+/* ❤️ SECOND PANEL LINK */
+#second-panel {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 200, 220, 0.95);
+    padding: 20px 35px;
+    border-radius: 25px;
+    font-size: 24px;
+    font-family: "Segoe UI", cursive;
+    color: #e84393;
+    box-shadow: 0 0 25px rgba(255, 100, 160, 0.7);
+    text-decoration: none; /* Remove underline */
+    text-align: center;
+    cursor: pointer;
+    z-index: 999;
+    transition: transform 0.3s ease, opacity 1s ease;
+}
+
+#second-panel:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+</style>
+
+<script>
+function playAudio() {
+    document.getElementById("myAudio").play();
+}
+</script>
+</head>
+
+<body>
+
+<!-- ❤️ TIMER -->
+<div id="clock-box">
+    <span id="clock">Loading love time…</span>
+</div>
+
+<!-- 🖼️ IMAGE -->
+<img id="corner-image" src="mine.png" alt="Love Image" />
+
+<div id="main">
+    <audio autoplay="autoplay" id="myAudio">
+        <source src="aud.mp3" type="audio/mp3" />
+    </audio>
+
+    <div id="wrap">
+        <div id="text">
+            <div id="code">
+                <span class="say">My beautiful wife 💞</span><br />
+                <span class="say">Happy Birthday 🎈</span><br />
+                <span class="say">May God bless you 🍀</span><br />
+                <span class="say">And give u many happiness 💕</span><br />
+                <span class="say">I love you ❤️</span><br />
+                <span class="say">And I will always love u 🥺 ❤️</span><br />
+                <span class="say">Hope u have a great day today ❤️😘</span><br />
+            </div>
+        </div>
+
+        <canvas id="canvas" width="1100" height="680"></canvas>
+    </div>
+</div>
+
+<!-- ❤️ SECOND PANEL LINK -->
+<a id="second-panel" href="slide.html">Click me 💖✨🥰</a>
+
+<!-- 🌳 LOVE TREE SCRIPT -->
+<script>
+(function() {
+    var canvas = $('#canvas');
+    if (!canvas[0].getContext) return;
+
+    var width = canvas.width();
+    var height = canvas.height();        
+    canvas.attr("width", width).attr("height", height);
+
+    var opts = {
+        seed: { x: width / 2 - 20, color: "rgb(190, 26, 37)", scale: 2 },
+        branch: [[535,680,570,250,500,200,30,100,[
+            [540,500,455,417,340,400,13,100,[[450,435,434,430,394,395,2,40]]],
+            [550,445,600,356,680,345,12,100,[[578,400,648,409,661,426,3,80]]],
+            [539,281,537,248,534,217,3,40],
+            [546,397,413,247,328,244,9,80,[
+                [427,286,383,253,371,205,2,40],
+                [498,345,435,315,395,330,4,60]
+            ]],
+            [546,357,608,252,678,221,6,100,[[590,293,646,277,648,271,2,80]]]
+        ]]],
+        bloom: { num: 700, width: 1080, height: 650 },
+        footer: { width: 1200, height: 5, speed: 10 }
+    };
+
+    var tree = new Tree(canvas[0], width, height, opts);
+    var seed = tree.seed;
+    var foot = tree.footer;
+    var hold = 1;
+
+    canvas.click(function(e) {
+        playAudio();
+        var offset = canvas.offset();
+        var x = e.pageX - offset.left;
+        var y = e.pageY - offset.top;
+        if (seed.hover(x, y)) {
+            hold = 0;
+            canvas.unbind("click mousemove").removeClass('hand');
+
+            // Show timer and image
+            document.getElementById("clock-box").classList.add("show");
+            document.getElementById("corner-image").classList.add("show");
+
+            // Show second panel link after seed click
+            $('#second-panel').fadeIn(1500);
+
+            // Start looping extra poem sections in pairs
+            startPoemPairs();
+        }
+    }).mousemove(function(e) {
+        var offset = canvas.offset();
+        var x = e.pageX - offset.left;
+        var y = e.pageY - offset.top;
+        canvas.toggleClass('hand', seed.hover(x, y));
+    });
+
+    var seedAnimate = eval(Jscex.compile("async", function () {
+        seed.draw();
+        while (hold) { $await(Jscex.Async.sleep(10)); }
+        while (seed.canScale()) { seed.scale(0.95); $await(Jscex.Async.sleep(10)); }
+        while (seed.canMove()) { seed.move(0, 2); foot.draw(); $await(Jscex.Async.sleep(10)); }
+    }));
+
+    var growAnimate = eval(Jscex.compile("async", function () {
+        do { tree.grow(); $await(Jscex.Async.sleep(10)); } while (tree.canGrow());
+    }));
+
+    var flowAnimate = eval(Jscex.compile("async", function () {
+        do { tree.flower(2); $await(Jscex.Async.sleep(10)); } while (tree.canFlower());
+    }));
+
+    var moveAnimate = eval(Jscex.compile("async", function () {
+        tree.snapshot("p1", 240, 0, 610, 680);
+        while (tree.move("p1", 500, 0)) { foot.draw(); $await(Jscex.Async.sleep(10)); }
+        foot.draw();
+        tree.snapshot("p2", 500, 0, 610, 680);
+        canvas.parent().css("background", "url(" + tree.toDataURL('image/png') + ")");
+        canvas.css("background", "#ffe");
+        $await(Jscex.Async.sleep(300));
+        canvas.css("background", "none");
+    }));
+
+    var textAnimate = eval(Jscex.compile("async", function () {
+        $("#code").show().typewriter();
+    }));
+
+    var runAsync = eval(Jscex.compile("async", function () {
+        $await(seedAnimate());
+        $await(growAnimate());
+        $await(flowAnimate());
+        $await(moveAnimate());
+        textAnimate().start();
+    }));
+
+    runAsync().start();
+
+    // 🌸 EXTRA POEM SECTIONS LOOPING IN PAIRS
+    var poemSections = [
+        "Roses are red,\nViolets are blue,\nI put <heart> in my HTML,\nJust so it beats for you. 💻❤️",
+        "I wrote if(loveForYou){always++;},\nAnd it compiles true,\nEvery line I type tonight,\nWhispers “I love you.” 💖✨",
+        "I added <cake> and <candles> tags,\nSo your birthday shines through,\nStyled it all with color: pink;,\nBecause love deserves that hue. 💕🎨",
+        "I wrapped my heart in <div> tags,\nAnd sprinkled in some hugs,\nanimation: hugs 5s infinite;\nSo you feel them in snugs. 🤗💻",
+        "I made the page interactive,\nEvery click a gentle cue,\nTo tell you softly, endlessly,\nHow much I adore you. 💌✨",
+        "Forever your coder,\nTyping love in every line,\nHappy Birthday, my darling,\nI’m yours, and you’re mine. ❤️"
+    ];
+
+    function startPoemPairs() {
+        var container = $("#code");
+        var idx = 0;
+
+        function typeSection(text) {
+            return new Promise(function(resolve) {
+                var section = $('<div class="extra-section"></div>');
+                container.append(section);
+                var i = 0;
+                function typeChar() {
+                    if (i < text.length) {
+                        section.append(text.charAt(i));
+                        i++;
+                        setTimeout(typeChar, 50);
+                    } else {
+                        section.fadeIn(500);
+                        resolve(section);
+                    }
+                }
+                typeChar();
+            });
+        }
+
+        async function showNextPair() {
+            // Remove old pair if any
+            var oldSections = container.find(".extra-section");
+            if (oldSections.length >= 2) {
+                oldSections.eq(0).fadeOut(500, function(){ $(this).remove(); });
+                oldSections.eq(1).fadeOut(500, function(){ $(this).remove(); });
+            }
+
+            // Type next pair
+            var first = await typeSection(poemSections[idx]);
+            idx = (idx + 1) % poemSections.length;
+            var second = await typeSection(poemSections[idx]);
+            idx = (idx + 1) % poemSections.length;
+
+            // Wait 20 seconds then show next pair
+            setTimeout(showNextPair, 20000);
+        }
+
+        showNextPair();
+    }
+
+})();
+</script>
+
+<!-- 🇯🇲 JAMAICA TIME REAL-TIME LOVE TIMER -->
+<script>
+(function () {
+    var startDate = new Date(Date.UTC(2007, 11, 14, 5, 0, 0));
+    function getJamaicaNow() {
+        return new Date(
+            new Date().toLocaleString("en-US", { timeZone: "America/Jamaica" })
+        );
+    }
+    function updateClock() {
+        var now = getJamaicaNow();
+        var diff = now - startDate;
+        var seconds = Math.floor(diff / 1000);
+        var minutes = Math.floor(seconds / 60);
+        var hours = Math.floor(minutes / 60);
+        var days = Math.floor(hours / 24);
+        hours %= 24; minutes %= 60; seconds %= 60;
+        document.getElementById("clock").innerHTML =
+            days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds";
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
